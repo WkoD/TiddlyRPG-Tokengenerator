@@ -1,0 +1,25 @@
+{
+  "output": "output",
+  "maptoolVersion": "1.11.5",
+  "browser": {
+    "channel": "chrome"
+  },
+  "defaultEdition": "2014",
+  "tokenBackground": "#c9bfa5",
+  "mirror": {},
+  "campaigns": {},
+  "roles": {
+    "npc": {
+      "description": "NPC, including named enemies",
+      "ring": ["#c8d2df", "#8fa3bd", "#3d4e66"]
+    },
+    "unique": {
+      "description": "Unique enemy (leader, spider queen)",
+      "ring": ["#ead39a", "#d4a73a", "#6b4a0f"]
+    },
+    "mob": {
+      "description": "Mob enemy (spiderling, swordsman)",
+      "ring": ["#d0d0d0", "#a6a6a6", "#4a4a4a"]
+    }
+  }
+}

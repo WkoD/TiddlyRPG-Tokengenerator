@@ -1,0 +1,230 @@
+<!doctype html>
+<!--
+	Generator page inside the data mirror (served at the mirror root, so the mirror's relative
+	paths work). Exposes window.TG for lib/mirror.mjs: load monsters and spells with the mirror's
+	own DataLoader, render the statblock with RenderBestiary.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/bestiary.css">
+<style>
+	body { margin: 0; padding: 0; background: transparent; }
+	#sheet { display: inline-flex; align-items: flex-start; gap: 16px; padding: 4px; }
+	.tg-col { position: relative; }
+	/* Not needed on a sheet: what the mirror hides in print and image export, source and page next to the name */
+	.ve-print__hidden,
+	.ve-lst-is-exporting-image__hidden,
+	.ve-stats__btn-name-pronounce,
+	.ve-stats__h-source-abbreviation,
+	.ve-rd__stats-name-page { display: none !important; }
+	.ve-stats__wrp-token { right: 0.25rem; top: 0.25rem; max-width: 104px; }
+	.ve-stats__wrp-token:hover { max-width: 104px; right: 0.25rem; }
+</style>
+</head>
+<body>
+<div id="sheet"></div>
+<script defer src="js/parser.js"></script>
+<script defer src="js/utils.js"></script>
+<script defer src="js/utils-ui.js"></script>
+<script defer src="lib/localforage.js"></script>
+<script type="module" src="js/utils-dataloader.js"></script>
+<script type="module" src="js/utils-brew.js"></script>
+<script type="module" src="js/utils-config.js"></script>
+<script defer src="js/render.js"></script>
+<script defer src="js/render-dice.js"></script>
+<script type="module">
+import {RenderBestiary} from "./js/render-bestiary.js";
+
+const TOKEN_URL = "/__tokengen/token";
+// Monster fields that do not belong on a sheet (or that the sheet handles itself)
+const NOT_RENDERED = ["variant", "dragonCastingColor", "dragonAge", "environment", "treasure", "soundClip", "altArt", "foundryImg", "token", "tokenHref", "legendaryGroup", "_legendaryGroup", "hasToken", "hasFluff", "hasFluffImages"];
+
+const strip = obj => JSON.parse(JSON.stringify(obj, (k, v) => (k.startsWith("__") ? undefined : v)));
+
+const toText = html => {
+	const el = document.createElement("div");
+	el.innerHTML = html;
+	for (const li of el.querySelectorAll("li")) li.prepend("- ");
+	document.body.append(el);
+	const text = el.innerText;
+	el.remove();
+	return tidy(text);
+};
+const tidy = s => s.replace(/ /g, " ").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+
+async function monster (name, source) {
+	const hash = UrlUtil.URL_TO_HASH_BUILDER["bestiary.html"]({name, source});
+	const mon = await DataLoader.pCacheAndGet("bestiary.html", source, hash, {isCopy: true});
+	if (!mon) return null;
+	await DataUtil.monster.pPreloadLegendaryGroupsSite();
+	const group = DataUtil.monster.getLegendaryGroup(mon);
+	const out = strip(mon);
+	if (group) {
+		out._legendaryGroup = strip({
+			name: group.name,
+			source: group.source,
+			lairActions: group.lairActions,
+			regionalEffects: group.regionalEffects,
+			mythicEncounter: group.mythicEncounter,
+		});
+	}
+	return out;
+}
+
+const tableRows = table => [...table.querySelectorAll(":scope > tr, :scope > tbody > tr")];
+
+/** Lair actions, regional effects and mythic encounter as text (they go to the GM notes, not the sheet). */
+function lairText (mon) {
+	const group = mon._legendaryGroup;
+	if (!group) return null;
+	const sections = [
+		["Lair Actions", group.lairActions],
+		["Regional Effects", group.regionalEffects],
+		["Mythic Encounter", group.mythicEncounter],
+	].filter(([, entries]) => entries?.length);
+	if (!sections.length) return null;
+	return sections.map(([name, entries]) => `${name.toUpperCase()}\n${toText(Renderer.get().render({type: "entries", entries}))}`).join("\n\n");
+}
+
+/**
+ * Renders the sheet. width: CSS px of one column; columns: 1 or 2.
+ * @returns {{height: number, width: number}}
+ */
+function render (mon, {width, columns, tokenVersion}) {
+	const prepared = strip(mon);
+	for (const k of NOT_RENDERED) delete prepared[k];
+	prepared.tokenHref = {type: "external", url: TOKEN_URL}; // reserves the space for the token
+
+	const sheet = document.getElementById("sheet");
+	sheet.innerHTML = "";
+	const table = document.createElement("table");
+	table.className = "ve-w-100 ve-stats";
+	table.append(RenderBestiary.getRenderedCreature(prepared, {isSkipExcludesRender: true}));
+
+	let rows = tableRows(table);
+	// Footer: environment and source
+	for (const tr of rows) if (/^(Environment|Source|Treasure):/.test(tr.textContent.trim())) tr.remove();
+	const col = document.createElement("div");
+	col.className = "tg-col ve-relative wrp-stats-table";
+	col.style.width = `${width}px`;
+	col.append(table);
+	col.insertAdjacentHTML("beforeend", `<div class="ve-stats__wrp-token"><img class="ve-stats__token" src="${TOKEN_URL}?v=${tokenVersion}" alt=""></div>`);
+	sheet.append(col);
+
+	if (columns === 2) {
+		rows = tableRows(table);
+		const total = rows.reduce((sum, tr) => sum + tr.offsetHeight, 0);
+		// Split before the row whose start is closest to half the height
+		let acc = 0;
+		let best = {index: rows.length, diff: Infinity};
+		rows.forEach((tr, index) => {
+			const diff = Math.abs(acc - total / 2);
+			if (index > 0 && diff < best.diff) best = {index, diff};
+			acc += tr.offsetHeight;
+		});
+		const second = document.createElement("table");
+		second.className = "ve-w-100 ve-stats";
+		second.append(rows[0].cloneNode(true)); // top border
+		for (const tr of rows.slice(best.index)) second.append(tr);
+		table.append(rows.at(-1).cloneNode(true)); // bottom border
+		const col2 = document.createElement("div");
+		col2.className = "tg-col ve-relative wrp-stats-table";
+		col2.style.width = `${width}px`;
+		col2.append(second);
+		sheet.append(col2);
+	}
+	const box = sheet.getBoundingClientRect();
+	return {height: box.height, width: box.width};
+}
+
+
+// region Spells
+const ABILITY_SHORT = {strength: "Str", dexterity: "Dex", constitution: "Con", intelligence: "Int", wisdom: "Wis", charisma: "Cha"};
+
+function spellRefs (mon, defaultSource) {
+	const found = new Map();
+	const json = JSON.stringify(mon.spellcasting ?? []);
+	for (const m of json.matchAll(/\{@spell ([^}|]+)(?:\|([^}|]*))?[^}]*\}/g)) {
+		const name = m[1].trim();
+		const source = (m[2] || defaultSource).trim();
+		found.set(`${name}|${source}`.toLowerCase(), {name, source});
+	}
+	return [...found.values()];
+}
+
+function firstSentence (text) {
+	const flat = text.replace(/\s+/g, " ").trim();
+	const m = flat.match(/^.*?[.!?](?=\s|$)/);
+	return m ? m[0] : flat;
+}
+
+async function spell ({name, source}) {
+	const hash = UrlUtil.URL_TO_HASH_BUILDER["spells.html"]({name, source});
+	const sp = await DataLoader.pCacheAndGet("spells.html", source, hash, {isCopy: true});
+	if (!sp) return {name, source, missing: true};
+	const plain = s => toText(Renderer.get().render(s));
+	const levelSchool = toText(Parser.spLevelSchoolMetaToFull(sp.level, sp.school, sp.meta, sp.subschools));
+	const time = toText(Parser.spTimeListToFull(sp.time, sp.meta, {isStripTags: true}));
+	const range = toText(Parser.spRangeToFull(sp.range));
+	const components = toText(Parser.spComponentsToFull(sp.components, sp.level, {isPlainText: true}));
+	const duration = toText(Parser.spDurationToFull(sp.duration, {isPlainText: true}));
+	const body = plain({type: "entries", entries: sp.entries});
+	const higher = sp.entriesHigherLevel ? plain({type: "entries", entries: sp.entriesHigherLevel}) : "";
+
+	const save = sp.savingThrow?.length ? `${sp.savingThrow.map(s => ABILITY_SHORT[s] ?? s).join("/")} save` : null;
+	const attack = sp.spellAttack?.length ? `${sp.spellAttack.map(a => (a === "R" ? "ranged" : a === "M" ? "melee" : a)).join("/")} spell attack` : null;
+	const dice = JSON.stringify(sp.entries).match(/\{@damage ([^}|]+)/)?.[1];
+	const damage = dice ? `${dice}${sp.damageInflict?.length ? ` ${sp.damageInflict.join("/")}` : ""}` : null;
+
+	return {
+		name: sp.name,
+		source: sp.source,
+		level: sp.level,
+		summary: [
+			sp.name,
+			time,
+			range,
+			duration,
+			save ?? attack,
+			damage,
+		].filter(Boolean).join(" · ") + ` — ${firstSentence(body)}`,
+		full: [
+			`${sp.name} (${levelSchool})`,
+			`Casting Time: ${time}`,
+			`Range: ${range}`,
+			`Components: ${components}`,
+			`Duration: ${duration}`,
+			"",
+			body,
+			higher ? `\n${higher}` : "",
+		].join("\n").trim(),
+	};
+}
+
+async function spells (mon, defaultSource) {
+	const list = await Promise.all(spellRefs(mon, defaultSource).map(spell));
+	return list.sort((a, b) => (a.level ?? 99) - (b.level ?? 99) || a.name.localeCompare(b.name));
+}
+
+/** Spell DC and attack bonus from the spellcasting header(s), e.g. "DC 17, +9 to hit". */
+function spellcastingStats (mon) {
+	return (mon.spellcasting ?? []).map(sc => {
+		const head = JSON.stringify(sc.headerEntries ?? []);
+		const dc = head.match(/\{@dc (\d+)\}/)?.[1];
+		const hit = head.match(/\{@hit (-?\d+)\}/)?.[1];
+		return [sc.name, dc && `DC ${dc}`, hit && `${hit >= 0 ? "+" : ""}${hit} to hit`].filter(Boolean).join(", ");
+	});
+}
+// endregion
+
+// No "[−]" toggles and no source/page parts in entry headings
+Renderer.get().setPartPageExpandCollapseDisabled(true);
+
+window.TG = {monster, render, lairText, spells, spellcastingStats, shortName: mon => Renderer.monster.getShortName(mon)};
+window.TG_READY = true;
+</script>
+</body>
+</html>

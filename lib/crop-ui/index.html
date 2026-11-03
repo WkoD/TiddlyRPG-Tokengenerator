@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token crop</title>
+<style>
+	:root {
+		--bg: #1d1f23;
+		--panel: #2a2d33;
+		--text: #e6e6e6;
+		--muted: #9aa0a8;
+		--accent: #6aa0ff;
+	}
+	* { box-sizing: border-box; }
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		font: 14px/1.4 system-ui, sans-serif;
+		display: flex;
+		align-items: flex-start;
+		gap: 20px;
+		padding: 20px;
+		min-height: 100vh;
+	}
+	#stage {
+		width: 640px;
+		height: 640px;
+		background: #111;
+		border-radius: 8px;
+		cursor: grab;
+		touch-action: none;
+		flex: none;
+	}
+	#stage.dragging { cursor: grabbing; }
+	aside {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		width: 290px;
+	}
+	h1 { font-size: 18px; margin: 0; }
+	.previews {
+		display: flex;
+		align-items: flex-end;
+		gap: 16px;
+		background: var(--panel);
+		padding: 14px;
+		border-radius: 8px;
+	}
+	.previews figure { margin: 0; text-align: center; color: var(--muted); font-size: 12px; }
+	label { display: flex; flex-direction: column; gap: 4px; color: var(--muted); }
+	input[type=color] { width: 60px; height: 32px; padding: 2px; background: var(--panel); border: 1px solid #444; border-radius: 6px; }
+	select, button {
+		font: inherit;
+		color: var(--text);
+		background: var(--panel);
+		border: 1px solid #444;
+		border-radius: 6px;
+		padding: 7px 10px;
+	}
+	.buttons { display: flex; gap: 8px; }
+	button { cursor: pointer; }
+	button.primary { background: var(--accent); border-color: var(--accent); color: #0b1220; font-weight: 600; }
+	.hint { color: var(--muted); font-size: 12px; margin: 0; }
+	#status { min-height: 1.4em; }
+</style>
+</head>
+<body>
+<canvas id="stage" width="640" height="640"></canvas>
+<aside>
+	<h1 id="name"></h1>
+	<div class="previews">
+		<figure><canvas id="big"></canvas><figcaption>Token</figcaption></figure>
+		<figure><canvas id="map"></canvas><figcaption>Map</figcaption></figure>
+	</div>
+	<label>Role
+		<select id="role"></select>
+	</label>
+	<label>Background (behind transparent images)
+		<input type="color" id="background">
+	</label>
+	<div class="buttons">
+		<button class="primary" id="save">Save</button>
+		<button id="reset">Reset</button>
+		<button id="cancel">Cancel</button>
+	</div>
+	<p class="hint">Wheel: zoom · Drag: move · Arrow keys: move (Shift: faster) · +/−: zoom</p>
+	<p id="status"></p>
+</aside>
+<script src="/token-render.js"></script>
+<script>
+	const $ = id => document.getElementById(id);
+	const stage = $("stage");
+	const STAGE = stage.width;
+	const PICTURE = 500; // diameter of the picture circle on the stage
+	const DPR = window.devicePixelRatio || 1;
+
+	let state;
+	let crop;
+	let image;
+
+	const ringOf = () => state.roles[$("role").value].ring;
+	const scale = () => PICTURE / crop.diameter;
+
+	function setupCanvas (canvas, size) {
+		canvas.width = canvas.height = Math.round(size * DPR);
+		canvas.style.width = canvas.style.height = `${size}px`;
+		return canvas.getContext("2d");
+	}
+	const bigCtx = setupCanvas($("big"), 200);
+	const mapCtx = setupCanvas($("map"), 56);
+
+	function drawStage () {
+		const ctx = stage.getContext("2d");
+		const c = STAGE / 2;
+		const inner = PICTURE / 2;
+		const outer = inner / (1 - 2 * TokenRender.RING_WIDTH);
+		ctx.fillStyle = $("background").value;
+		ctx.fillRect(0, 0, STAGE, STAGE);
+		ctx.save();
+		ctx.imageSmoothingQuality = "high";
+		ctx.translate(c, c);
+		ctx.scale(scale(), scale());
+		ctx.drawImage(image, -crop.x, -crop.y);
+		ctx.restore();
+
+		// Dim everything outside the picture circle, show the ring band
+		ctx.beginPath();
+		ctx.rect(0, 0, STAGE, STAGE);
+		ctx.arc(c, c, outer, 0, Math.PI * 2, true);
+		ctx.fillStyle = "rgba(0,0,0,0.65)";
+		ctx.fill();
+		ctx.beginPath();
+		ctx.arc(c, c, outer, 0, Math.PI * 2);
+		ctx.arc(c, c, inner, 0, Math.PI * 2, true);
+		ctx.fillStyle = "rgba(255,255,255,0.18)";
+		ctx.fill();
+		ctx.strokeStyle = "rgba(255,255,255,0.8)";
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.arc(c, c, inner, 0, Math.PI * 2);
+		ctx.stroke();
+	}
+
+	function draw () {
+		drawStage();
+		const background = $("background").value;
+		TokenRender.drawToken(bigCtx, bigCtx.canvas.width, image, crop, ringOf(), background);
+		TokenRender.drawToken(mapCtx, mapCtx.canvas.width, image, crop, ringOf(), background);
+	}
+
+	function zoom (factor, at = {x: STAGE / 2, y: STAGE / 2}) {
+		const max = 4 * Math.max(image.naturalWidth, image.naturalHeight);
+		const next = Math.min(max, Math.max(16, crop.diameter * factor));
+		// Keep the image point under the cursor where it is
+		const px = crop.x + (at.x - STAGE / 2) / scale();
+		const py = crop.y + (at.y - STAGE / 2) / scale();
+		crop.diameter = next;
+		crop.x = px - (at.x - STAGE / 2) / scale();
+		crop.y = py - (at.y - STAGE / 2) / scale();
+		draw();
+	}
+
+	const stagePoint = e => {
+		const r = stage.getBoundingClientRect();
+		return {x: (e.clientX - r.left) * STAGE / r.width, y: (e.clientY - r.top) * STAGE / r.height};
+	};
+
+	let drag = null;
+	stage.addEventListener("pointerdown", e => {
+		drag = stagePoint(e);
+		stage.setPointerCapture(e.pointerId);
+		stage.classList.add("dragging");
+	});
+	stage.addEventListener("pointermove", e => {
+		if (!drag) return;
+		const p = stagePoint(e);
+		crop.x -= (p.x - drag.x) / scale();
+		crop.y -= (p.y - drag.y) / scale();
+		drag = p;
+		draw();
+	});
+	const endDrag = () => {
+		drag = null;
+		stage.classList.remove("dragging");
+	};
+	stage.addEventListener("pointerup", endDrag);
+	stage.addEventListener("pointercancel", endDrag);
+	stage.addEventListener("wheel", e => {
+		e.preventDefault();
+		zoom(Math.exp(e.deltaY * 0.0015), stagePoint(e));
+	}, {passive: false});
+
+	document.addEventListener("keydown", e => {
+		if (e.target.tagName === "SELECT" || e.target.tagName === "INPUT") return;
+		const step = (e.shiftKey ? 10 : 1) / scale();
+		const moves = {ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step]};
+		if (moves[e.key]) {
+			crop.x += moves[e.key][0];
+			crop.y += moves[e.key][1];
+			draw();
+			e.preventDefault();
+		} else if (e.key === "+" || e.key === "=") zoom(1 / 1.05);
+		else if (e.key === "-") zoom(1.05);
+	});
+
+	$("role").addEventListener("change", draw);
+	$("background").addEventListener("input", draw);
+	$("reset").addEventListener("click", () => {
+		crop = TokenRender.defaultCrop(image.naturalWidth, image.naturalHeight);
+		draw();
+	});
+
+	async function post (url, body) {
+		const res = await fetch(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body ?? {})});
+		if (!res.ok) throw new Error(await res.text());
+	}
+	function done (message) {
+		for (const el of document.querySelectorAll("button, select")) el.disabled = true;
+		$("status").textContent = message;
+	}
+	$("save").addEventListener("click", async () => {
+		$("status").textContent = "Saving…";
+		try {
+			await post("/save", {crop, role: $("role").value, background: $("background").value});
+			done("Saved. You can close this tab.");
+		} catch (e) {
+			$("status").textContent = `Error: ${e.message}`;
+		}
+	});
+	$("cancel").addEventListener("click", async () => {
+		await post("/cancel");
+		done("Cancelled. You can close this tab.");
+	});
+
+	(async () => {
+		state = await (await fetch("/state")).json();
+		$("name").textContent = state.name;
+		document.title = `Crop: ${state.name}`;
+		for (const [key, role] of Object.entries(state.roles)) {
+			const option = new Option(`${key} – ${role.description}`, key);
+			$("role").add(option);
+		}
+		$("role").value = state.role;
+		$("background").value = state.background;
+		image = new Image();
+		image.src = "/portrait";
+		await image.decode();
+		crop = state.crop ? {...state.crop} : TokenRender.defaultCrop(image.naturalWidth, image.naturalHeight);
+		draw();
+	})();
+</script>
+</body>
+</html>
