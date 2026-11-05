@@ -17,18 +17,18 @@
   <x>0</x>
   <y>0</y>
   <z>0</z>
+  <lastX>0</lastX>
+  <lastY>0</lastY>
   <anchorX>0</anchorX>
   <anchorY>0</anchorY>
   <sizeScale>1.0</sizeScale>
-  <lastX>0</lastX>
-  <lastY>0</lastY>
+  <scaleX>1.0</scaleX>
+  <scaleY>1.0</scaleY>
   <snapToScale>true</snapToScale>
   <width>{{WIDTH}}</width>
   <height>{{HEIGHT}}</height>
-  <isoWidth>{{WIDTH}}</isoWidth>
-  <isoHeight>{{HEIGHT}}</isoHeight>
-  <scaleX>1.0</scaleX>
-  <scaleY>1.0</scaleY>
+  <isoWidth>0</isoWidth>
+  <isoHeight>0</isoHeight>
   <sizeMap>
     <entry>
       <string>net.rptools.maptool.model.SquareGrid</string>
@@ -44,750 +44,107 @@
   <alwaysVisibleTolerance>2</alwaysVisibleTolerance>
   <isAlwaysVisible>false</isAlwaysVisible>
   <name>{{NAME}}</name>
-{{GM_NAME}}  <ownerType>0</ownerType>
+  <ownerList/>
+  <ownerType>0</ownerType>
   <tokenShape>CIRCLE</tokenShape>
   <tokenType>NPC</tokenType>
   <layer>TOKEN</layer>
   <propertyType>Basic</propertyType>
   <tokenOpacity>1.0</tokenOpacity>
   <speechName></speechName>
-{{GM_NOTES}}  <terrainModifier>0.0</terrainModifier>
+  <terrainModifier>0.0</terrainModifier>
   <terrainModifierOperation>NONE</terrainModifierOperation>
   <terrainModifiersIgnored>
     <net.rptools.maptool.model.Token_-TerrainModifierOperation>NONE</net.rptools.maptool.model.Token_-TerrainModifierOperation>
   </terrainModifiersIgnored>
   <isFlippedX>false</isFlippedX>
   <isFlippedY>false</isFlippedY>
+  <isFlippedIso>false</isFlippedIso>
   <charsheetImage>
     <id>{{STATBLOCK_IMAGE}}</id>
   </charsheetImage>
   <portraitImage>
     <id>{{PORTRAIT_IMAGE}}</id>
   </portraitImage>
+  <uniqueLightSources class="linked-hash-map"/>
   <lightSourceList/>
   <sightType>Normal</sightType>
   <hasSight>false</hasSight>
-  <state>
-    <entry>
-      <string>X0X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>M1</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Beastform</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>M2</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>3X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>M3</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Slow</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>M4</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Paralyzed</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Frightened</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Bless</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Hunters Mark</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Petrified</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X9X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Custom 2</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Prone</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Custom 1</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X5X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X1X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Custom 3</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Poisoned</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Dead</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>4X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>0X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX1</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX0</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX3</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>2XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX2</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Incapacitated</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX5</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>4XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Invisibility</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX4</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Blinded</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX7</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>6XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX6</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Restrained</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX9</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>8XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>XX8</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X6X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X2X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>A</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>B</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>C</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>5X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>D</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>E</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>F</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>G</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>1X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>H</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>I</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>J</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>K</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Grappled</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Rage</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>L</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>M</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>N</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>O</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Haste</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>P</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Cover2</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Charmed</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Cover5</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X7X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X0</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X1</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X2</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X3</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X3X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X4</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X5</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X6</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X7</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X8</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X9</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>2X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Concentration</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>1XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Silence</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>3XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Sleep</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>5XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Deafened</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>7XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X8X</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>9XX</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Hex</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>Dying</string>
-      <boolean>false</boolean>
-    </entry>
-    <entry>
-      <string>X4X</string>
-      <boolean>false</boolean>
-    </entry>
-  </state>
+  <hasImageTable>false</hasImageTable>
+  <notesType>text/plain</notesType>
+{{GM_NOTES}}{{GM_NAME}}  <state/>
   <propertyMapCI>
     <store>
       <entry>
-        <string>magic</string>
+        <string>dexterity</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Magic</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>strength</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Strength</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>hp</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>HP</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>hunters mark</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Hunters Mark</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>language</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Language</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>incapacitated</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Incapacitated</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>charisma</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Charisma</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>cover</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Cover</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>hex</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Hex</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>state</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>State</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>silence</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Silence</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>petrified</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Petrified</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>ac</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>AC</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>poisoned</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Poisoned</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>intelligence</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Intelligence</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>originalsize</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>OriginalSize</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>invisibility</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Invisibility</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>slow</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Slow</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>elevationlayer</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>ElevationLayer</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>restrained</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Restrained</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>charmed</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Charmed</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>conditions</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Conditions</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>frightened</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Frightened</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>damage-b</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Damage-B</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>damage</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Damage</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>constitution</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Constitution</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>passive perception</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Passive Perception</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>description</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Description</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>wisdom</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Wisdom</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>sleep</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Sleep</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>defense</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Defense</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>blinded</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Blinded</key>
-          <outer-class reference="../../../.."/>
+          <key>Dexterity</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
         <string>elevation</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
           <key>Elevation</key>
-          <outer-class reference="../../../.."/>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
-        <string>custom 2</string>
+        <string>ac</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Custom 2</key>
-          <outer-class reference="../../../.."/>
+          <key>AC</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
-        <string>custom 1</string>
+        <string>constitution</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Custom 1</key>
-          <outer-class reference="../../../.."/>
+          <key>Constitution</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
-        <string>custom 3</string>
+        <string>strength</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Custom 3</key>
-          <outer-class reference="../../../.."/>
+          <key>Strength</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
-        <string>temphp</string>
+        <string>defense</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>TempHP</key>
-          <outer-class reference="../../../.."/>
+          <key>Defense</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
-        <string>concentration</string>
+        <string>hp</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Concentration</key>
-          <outer-class reference="../../../.."/>
+          <key>HP</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
-        <string>bless</string>
+        <string>description</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Bless</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>haste</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Haste</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>hp-b</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>HP-B</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>dexterity</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Dexterity</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>grappled</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Grappled</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>deafened</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Deafened</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>paralyzed</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Paralyzed</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>elevationopacity</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>ElevationOpacity</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>rage</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Rage</key>
-          <outer-class reference="../../../.."/>
-        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
-      </entry>
-      <entry>
-        <string>prone</string>
-        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
-          <key>Prone</key>
-          <outer-class reference="../../../.."/>
+          <key>Description</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
       <entry>
         <string>movement</string>
         <net.rptools.CaseInsensitiveHashMap_-KeyValue>
           <key>Movement</key>
-          <outer-class reference="../../../.."/>
+        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
+      </entry>
+      <entry>
+        <string>charisma</string>
+        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
+          <key>Charisma</key>
+        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
+      </entry>
+      <entry>
+        <string>intelligence</string>
+        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
+          <key>Intelligence</key>
+        </net.rptools.CaseInsensitiveHashMap_-KeyValue>
+      </entry>
+      <entry>
+        <string>wisdom</string>
+        <net.rptools.CaseInsensitiveHashMap_-KeyValue>
+          <key>Wisdom</key>
         </net.rptools.CaseInsensitiveHashMap_-KeyValue>
       </entry>
     </store>

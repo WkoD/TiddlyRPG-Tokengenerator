@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Token generator for MapTool 1.11.5. The CLI (`bin/tokengen.mjs`) does the mechanical work; Claude
+Token generator for MapTool 1.18.7. The CLI (`bin/tokengen.mjs`) does the mechanical work; Claude
 picks the basis, changes statblocks and asks the open questions. The workflow for a token request
 is the skill `.claude/skills/token/SKILL.md`.
 
@@ -22,7 +22,7 @@ is the skill `.claude/skills/token/SKILL.md`.
 | `lib/crop.mjs`, `lib/crop-ui/` | local crop page; saving writes `token.json` and renders `token.png` |
 | `lib/gmnotes.mjs` | GM notes text |
 | `lib/clipboard.mjs` | `--image clipboard` |
-| `templates/content.xml` | token XML, derived from a token saved by MapTool 1.11.5 |
+| `templates/content.xml` | token XML, derived from a token saved by MapTool 1.18.7 |
 | `config.json` | defaults: output, browser, roles |
 | `config.local.json` | gitignored: mirror paths per edition, campaigns; merged on top of `config.json` |
 | `output/` | working folders and results, gitignored |
@@ -48,7 +48,7 @@ mirror's data and code, everything keeps the names the mirror uses.
 - **Embedded data:** `tokengen/token.json` is the generator's own entry. MapTool ignores it, and it
   may be lost when MapTool saves the token again. The `Based on:` line in the GM notes is the
   fallback for `open`.
-- **Do not change the template casually.** It is a token as MapTool 1.11.5 writes it, with
+- **Do not change the template casually.** It is a token as MapTool 1.18.7 writes it, with
   placeholders. Any change needs an import test in MapTool.
 
 ## Token image
@@ -74,6 +74,12 @@ mirror's data and code, everything keeps the names the mirror uses.
 - **GM notes are for use at the table.** They hold a spell overview (one line per spell, by
   level), the lair texts and the spells in full (alphabetically). They do not hold the statblock as
   text. `open` falls back on the `Based on:` line.
+- **GM notes are HTML** (`gmNotesType` `text/html`).
+  - **Plain HTML only.** MapTool renders HTML with Swing's HTML 3.2: only headings, paragraphs,
+    lists, `<b>`, `<i>`, `<br>`, `<hr>`, and no CSS.
+  - **No Markdown.** Markdown notes were tried with MapTool 1.18.7 and did not render correctly.
+  - **Foreign tokens keep their type.** Their notes are stored as `gmnotes.txt`, `.html` or `.md`
+    in the working folder.
 - **Layout:** one column, 420 CSS px wide. Taller than `MAX_SINGLE_COLUMN_HEIGHT` means two columns,
   split between rows.
 - **Editions:** each mirror renders in its own style; the 2024 one shows initiative and a Mod/Save

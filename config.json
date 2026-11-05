@@ -1,12 +1,11 @@
 {
   "output": "output",
-  "maptoolVersion": "1.11.5",
+  "maptoolVersion": "1.18.7",
   "browser": {
     "channel": "chrome"
   },
   "defaultEdition": "2014",
-  "tokenBackground": "#c9bfa5",
-  "mirror": {},
+  "tokenBackground": "#c9bfa5",  "mirror": {},
   "campaigns": {},
   "roles": {
     "npc": {

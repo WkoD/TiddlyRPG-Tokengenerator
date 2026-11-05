@@ -100,25 +100,32 @@ test("renaming also finds a word of the name (the bandit for Bandit Captain)", (
 	assert.equal(dragon.trait[0].entries[0], "Near the blue dragon's lair Herbert waits.");
 });
 
-test("GM notes: header, spells by level, lair, full texts alphabetically; Based on parses back", () => {
-	const token = {name: "Unbekannter Mann", gmName: "Alvin", edition: "2014", basedOn: {name: "Archmage", source: "SRC"}};
+test("GM notes as HTML: header, spells by level, lair, full texts alphabetically; Based on parses back", () => {
+	const token = {name: "Unbekannter Mann", gmName: "Alvin <Archmage>", edition: "2014", basedOn: {name: "Archmage", source: "SRC"}};
 	const notes = gmNotes(token, {
 		spellcasting: ["Spellcasting, DC 17, +9 to hit"],
-		lair: "LAIR ACTIONS\nThe ceiling collapses.",
+		lair: [{name: "Lair Actions", text: "Choose one:\n\n- The ceiling collapses.\n- Fog & rain."}],
 		spells: [
-			{name: "Shield", level: 1, summary: "Shield · 1 reaction", full: "Shield (1st-level abjuration)"},
+			{name: "Shield", level: 1, summary: "Shield · 1 reaction — An invisible barrier.", full: "Shield (1st-level abjuration)\nCasting Time: 1 reaction\n\nAn invisible barrier."},
 			{name: "Fire Bolt", level: 0, summary: "Fire Bolt · 1 action", full: "Fire Bolt (Evocation cantrip)"},
 			{name: "Mage Hand", level: 0, summary: "Mage Hand · 1 action", full: "Mage Hand (Conjuration cantrip)"},
 			{name: "Nonsense", source: "XYZ", missing: true},
 		],
 	});
-	assert.match(notes, /^Alvin \(players see: Unbekannter Mann\)\nBased on: Archmage \(SRC, 2014\)/);
-	assert.match(notes, /Cantrips:\n- Fire Bolt · 1 action\n- Mage Hand · 1 action\n1st level:\n- Shield/);
+	assert.match(notes, /^<html><body>\n<h2>Alvin &lt;Archmage&gt;<\/h2>/);
+	assert.match(notes, /Players see: Unbekannter Mann/);
+	assert.match(notes, /<p><b>Cantrips<\/b><\/p>\n<ul><li><b>Fire Bolt<\/b> · 1 action<\/li><li><b>Mage Hand<\/b> · 1 action<\/li><\/ul>\n<p><b>1st level<\/b><\/p>\n<ul><li><b>Shield<\/b> · 1 reaction — An invisible barrier.<\/li><\/ul>/);
+	assert.match(notes, /<h3>Lair Actions<\/h3>\n<p>Choose one:<\/p>\n<ul><li>The ceiling collapses.<\/li><li>Fog &amp; rain.<\/li><\/ul>/);
+	assert.match(notes, /<h4>Shield<\/h4>\n<p><i>1st-level abjuration<\/i><\/p>\n<p>Casting Time: 1 reaction<\/p>\n<p>An invisible barrier.<\/p>/);
 	const at = s => notes.indexOf(s);
-	assert.ok(at("SPELLS") < at("LAIR ACTIONS") && at("LAIR ACTIONS") < at("SPELL DESCRIPTIONS"));
-	const full = notes.slice(at("SPELL DESCRIPTIONS"));
-	assert.ok(full.indexOf("Fire Bolt (") < full.indexOf("Mage Hand (") && full.indexOf("Mage Hand (") < full.indexOf("Shield ("), "alphabetical");
-	assert.ok(!notes.includes("STATBLOCK"));
+	assert.ok(at("<h3>Spells</h3>") < at("<h3>Lair Actions</h3>") && at("<h3>Lair Actions</h3>") < at("<h3>Spell Descriptions</h3>"));
+	const full = notes.slice(at("<h3>Spell Descriptions</h3>"));
+	assert.ok(full.indexOf("<h4>Fire Bolt") < full.indexOf("<h4>Mage Hand") && full.indexOf("<h4>Mage Hand") < full.indexOf("<h4>Shield"), "alphabetical");
 	assert.match(notes, /Not found in the mirror: Nonsense \(XYZ\)/);
 	assert.deepEqual(parseBasedOn(notes), {basedOn: {name: "Archmage", source: "SRC"}, edition: "2014"});
+});
+
+test("Based on is read from plain notes too", () => {
+	assert.deepEqual(parseBasedOn("Philia\nBased on: Medusa (SRC, 2014)"), {basedOn: {name: "Medusa", source: "SRC"}, edition: "2014"});
+	assert.equal(parseBasedOn("<p>nothing here</p>"), null);
 });

@@ -19,7 +19,7 @@ const sample = (overrides = {}) => ({
 	tokenSize: {width: 512, height: 512},
 	thumbnails: {small: bytes("small"), large: bytes("large")},
 	embedded: {format: 1, token: {name: "x"}, statblock: null},
-	maptoolVersion: "1.11.5",
+	maptoolVersion: "1.18.7",
 	...overrides,
 });
 const md5 = s => crypto.createHash("md5").update(s).digest("hex");
@@ -66,6 +66,17 @@ test("gmName, gmNotes and embedded data are optional", () => {
 	const t = readRptok(data);
 	assert.equal(t.gmName, null);
 	assert.equal(t.embedded, null);
+});
+
+test("GM notes are HTML by default, the type is written and read back", () => {
+	const html = packRptok(sample({gmNotes: "<h2>Philia</h2>"}));
+	assert.match(strFromU8(unzipSync(html)["content.xml"]), /<gmNotes>&lt;h2&gt;Philia&lt;\/h2&gt;<\/gmNotes>\n  <gmNotesType>text\/html<\/gmNotesType>/);
+	assert.equal(readRptok(html).gmNotesType, "text/html");
+	assert.equal(readRptok(packRptok(sample({gmNotesType: "text/markdown"}))).gmNotesType, "text/markdown");
+	assert.throws(() => packRptok(sample({gmNotesType: "text/rtf"})), /Unknown notes type/);
+	const xml = strFromU8(unzipSync(packRptok(sample()))["content.xml"]);
+	assert.match(xml, /<notesType>text\/plain<\/notesType>/);
+	assert.match(strFromU8(unzipSync(packRptok(sample()))["properties.xml"]), /1\.18\.7/);
 });
 
 test("each token gets new GUIDs", () => {

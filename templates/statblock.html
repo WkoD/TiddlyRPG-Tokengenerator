@@ -76,7 +76,7 @@ async function monster (name, source) {
 
 const tableRows = table => [...table.querySelectorAll(":scope > tr, :scope > tbody > tr")];
 
-/** Lair actions, regional effects and mythic encounter as text (they go to the GM notes, not the sheet). */
+/** Lair actions, regional effects and mythic encounter as [{name, text}] (they go to the GM notes, not the sheet). */
 function lairText (mon) {
 	const group = mon._legendaryGroup;
 	if (!group) return null;
@@ -86,7 +86,7 @@ function lairText (mon) {
 		["Mythic Encounter", group.mythicEncounter],
 	].filter(([, entries]) => entries?.length);
 	if (!sections.length) return null;
-	return sections.map(([name, entries]) => `${name.toUpperCase()}\n${toText(Renderer.get().render({type: "entries", entries}))}`).join("\n\n");
+	return sections.map(([name, entries]) => ({name, text: toText(Renderer.get().render({type: "entries", entries}))}));
 }
 
 /**

@@ -8,7 +8,7 @@ role-playing games. A token carries three images:
 - **Statblock**: the creature's statblock as an image (MapTool's character sheet), with the token
   top right
 
-The GM notes of the token hold, in this order:
+The GM notes of the token are HTML and hold, in this order:
 
 1. who it is, with a `Based on: Medusa (SRC, 2014)` line
 2. an overview of its spells, one line each, by level
@@ -30,7 +30,9 @@ rebuilt at any time.
   - a source folder: `data/` (bestiary, spells, `msbcr.json`, `monsterfeatures.json`) plus the JS
     and CSS that render statblocks
   - an image folder (`bestiary/…`, `bestiary/tokens/…`)
-- MapTool 1.11.5 (the format the tokens are written in)
+- MapTool 1.18.7 (the format the tokens are written in; GM notes as HTML need 1.13 or later).
+  Set *Preferences → Image Scaling Quality* to *High*: MapTool shrinks a statblock taller than the
+  screen to fit, and the default *Low* makes its text hard to read.
 
 ```sh
 npm install
